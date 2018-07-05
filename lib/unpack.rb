@@ -7,7 +7,10 @@ class Unpack
   
   def initialize(args)
     args.keys.each { |name| instance_variable_set "@" + name.to_s, args[name] }
-    
+    absolute_path_to_unrar = "#{File.dirname(__FILE__)}/../bin/unrar"
+    if RUBY_PLATFORM.downcase.match('darwin')
+      absolute_path_to_unrar = "#{File.dirname(__FILE__)}/../bin/unrar_mac"
+    end
     @options = {
       :min_files              => 5,
       :depth                  => 2,
@@ -15,7 +18,7 @@ class Unpack
       :force_remove           => false,
       :remove                 => false,
       :to                     => false,
-      :absolute_path_to_unrar => "#{File.dirname(__FILE__)}/../bin/unrar"
+      :absolute_path_to_unrar => absolute_path_to_unrar
     }
     
     @removeable = {}
